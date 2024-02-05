@@ -1,0 +1,10 @@
+{
+    "database_info": {
+        "host": "<host>",
+        "user": "<user>",
+        "password": "<password>",
+        "database": "<database>"
+    },
+    "bot_token": "<token>",
+    "admin_id": <id>
+}
