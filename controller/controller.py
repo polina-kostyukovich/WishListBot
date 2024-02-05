@@ -10,6 +10,7 @@ from find_wish_controller import FindWishController
 from manage_access_controller import ManageAccessController
 from edit_wishlist_controller import EditWishlistController
 from see_friend_wishlist_controller import SeeFriendWishlistController
+from feedback_controller import FeedbackController
 sys.path.insert(1, '/home/polyushka/WishListBot')
 import beans
 import service
@@ -75,6 +76,10 @@ class Controller:
                     reply_markup = types.ReplyKeyboardRemove(selective=False),
                     reply_params = None):
         return self.__bot.sendMessage(user_id, text, reply_markup, reply_params)
+
+
+    def forwardMessage(self, message, to_chat_id):
+        self.__bot.forwardMessage(to_chat_id, message.chat.id, message.message_id)
 
 
     def sendLastMessage(self, user_id: int):
@@ -190,4 +195,16 @@ class Controller:
                                                 self.__phrases.common,
                                                 self.__phrases.see_friend_wishlist,
                                                 self.__admin_id)
+            self.startActiveScenario(message)
+
+
+    def setGiveFeedbackCase(self, message):
+        if message.from_user.id in self.__active_scenario_controllers.keys():
+            self.askToFinishScenario(message)
+        else:
+            self.__active_scenario_controllers[message.from_user.id] = \
+                    FeedbackController(self,
+                                       self.__phrases.common,
+                                       self.__phrases.feedback,
+                                       self.__admin_id)
             self.startActiveScenario(message)

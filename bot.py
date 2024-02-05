@@ -57,6 +57,11 @@ class WishlistBot(Bot):
         WishlistBot.controller.setSeeFriendWishlistCase(message)
 
     @staticmethod
+    @bot.message_handler(commands=['give_feedback'])
+    def giveFeedback(message):
+        WishlistBot.controller.setGiveFeedbackCase(message)
+
+    @staticmethod
     @bot.message_handler(commands=['cancel'])
     def cancelWishlist(message):
         WishlistBot.controller.cancel(message)
@@ -68,6 +73,9 @@ class WishlistBot(Bot):
 
     def sendMessage(self, user_id: int, message: str, reply_markup, reply_parameters):
         return WishlistBot.bot.send_message(user_id, message, reply_markup=reply_markup, reply_parameters=reply_parameters)
+
+    def forwardMessage(self, to_chat_id, from_chat_id, message_id):
+        WishlistBot.bot.forward_message(to_chat_id, from_chat_id, message_id)
 
 
 if __name__ == '__main__':
@@ -88,6 +96,7 @@ if __name__ == '__main__':
         telebot.types.BotCommand("/find_and_edit_wish", commands_descriptions.find_and_edit_wish),
         telebot.types.BotCommand("/manage_access", commands_descriptions.manage_access),
         telebot.types.BotCommand("/see_friend_wishlist", commands_descriptions.see_friend_wishlist),
+        telebot.types.BotCommand("/give_feedback", commands_descriptions.give_feedback),
         telebot.types.BotCommand("/cancel", commands_descriptions.cancel)
     ])
 
